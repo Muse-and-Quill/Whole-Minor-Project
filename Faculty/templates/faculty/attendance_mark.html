@@ -1,0 +1,34 @@
+<!-- Faculty/templates/faculty/attendance_mark.html -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>Mark Attendance</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/faculty.css') }}"></head>
+<body>
+  <header><h1>Mark Attendance</h1><a href="{{ url_for('faculty_bp.dashboard') }}">Back</a></header>
+  <main class="container">
+    <section class="card">
+      <form id="attendanceForm" method="post" action="{{ url_for('faculty_bp.mark_attendance') }}">
+        <label>Subject Name</label><input name="subject_name" required>
+        <label>Subject Code</label><input name="subject_code">
+        <label>Date</label><input type="date" name="date" required>
+        <label>Time/Period</label><input name="time_period">
+        <label>Batch</label><input name="batch">
+        <p>After creating batch enrollments, fetch students by batch using the JavaScript helper (not implemented here). For now, enter registration numbers below.</p>
+        <div id="studentsArea">
+          <div class="student-row">
+            <input name="student_reg_no[]" placeholder="Registration number" required>
+            <select name="status[]">
+              <option>Present</option><option>Absent</option><option>Late</option>
+            </select>
+            <button type="button" class="remove">-</button>
+          </div>
+        </div>
+        <button type="button" id="addStudent">Add Student</button>
+        <button type="submit">Submit Attendance</button>
+      </form>
+    </section>
+  </main>
+
+  <script src="{{ url_for('static', filename='js/attendance.js') }}"></script>
+</body>
+</html>

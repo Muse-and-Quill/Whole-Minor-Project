@@ -1,0 +1,385 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>UAP — Student Dashboard</title>
+
+    <!-- GOOGLE FONTS -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Poppins", sans-serif;
+        }
+
+        body {
+            overflow-x: hidden;
+            background: #F8F4EC;
+        }
+
+        /* Background */
+        .bg-image{
+            position: fixed;
+            inset: 0;
+            background-image: url("https://plus.unsplash.com/premium_photo-1676068243733-df1880c2aef8?auto=format&fit=crop");
+            background-size: cover;
+            background-position: center;
+            filter: blur(3px);
+            opacity: 0.75;
+            z-index: -2;
+        }
+
+        .bg-overlay{
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(to bottom right, rgba(248,244,236,0.7), rgba(255,162,57,0.25));
+            z-index: -1;
+        }
+
+        /* Topbar */
+        .topbar {
+            width: 100%;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            background: rgba(255,255,255,0.25);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255,255,255,0.45);
+            box-shadow: 0 4px 18px rgba(0,0,0,0.15);
+            position: sticky;
+            top: 0;
+            z-index: 900;
+            animation: slideDown 0.6s ease;
+        }
+
+        @keyframes slideDown {
+            from { transform: translateY(-40px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .topbar h1 {
+            font-size: 24px;
+            font-weight: 700;
+            color: #5A0A6A;
+        }
+
+        .nav {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            font-size: 16px;
+        }
+
+        .nav span {
+            color: #333;
+            font-weight: 600;
+        }
+
+        .nav a {
+            padding: 8px 20px;
+            background: #FFA239;
+            border-radius: 999px;
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        .nav a:hover {
+            background: #ff9933;
+            transform: scale(1.05);
+        }
+
+        /* Layout */
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 35px auto;
+            padding: 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 28px;
+        }
+
+        /* Card */
+        .card {
+            background: rgba(255,255,255,0.32);
+            border-radius: 28px;
+            padding: 24px 26px;
+            backdrop-filter: blur(14px);
+            border: 1px solid rgba(255,255,255,0.45);
+            box-shadow: 0px 8px 24px rgba(0,0,0,0.15);
+
+            animation: fadeUp 0.9s ease-out forwards;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        @keyframes fadeUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card h2 {
+            color: #5A0A6A;
+            font-size: 22px;
+            margin-bottom: 10px;
+        }
+
+        /* Profile section */
+        .profile p {
+            margin: 8px 0;
+            font-size: 14px;
+            color: #333;
+        }
+
+        .profile strong {
+            color: #5A0A6A;
+        }
+
+        /* Form */
+        form label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        form input {
+            margin-top: 4px;
+            padding: 10px 12px;
+            border-radius: 14px;
+            border: 1px solid rgba(0,0,0,0.12);
+            font-size: 14px;
+            outline: none;
+            background: rgba(255,255,255,0.95);
+            transition: 0.2s;
+            width: 100%;
+        }
+
+        form input:focus {
+            border-color: #FFA239;
+            box-shadow: 0 0 0 2px rgba(255,162,57,0.25);
+        }
+
+        form button {
+            margin-top: 10px;
+            padding: 10px 20px;
+            background: #FFA239;
+            color: white;
+            border: none;
+            border-radius: 999px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: 0.3s;
+        }
+
+        form button:hover {
+            background: #ff9933;
+            transform: scale(1.04);
+        }
+
+        /* Add subject row */
+        .subject-row {
+            display: grid;
+            grid-template-columns: 1fr 0.6fr 0.8fr 50px;
+            gap: 10px;
+            margin-top: 8px;
+        }
+
+        .subject-row button {
+            background: #c0392b;
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        #addSubject {
+            background: #63A361;
+            margin-top: 12px;
+        }
+
+        /* Attendance table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 12px;
+        }
+
+        table thead {
+            background: rgba(90, 10, 106, 0.1);
+        }
+
+        table th {
+            padding: 10px;
+            font-size: 14px;
+            color: #5A0A6A;
+            text-align: left;
+        }
+
+        table td {
+            padding: 8px 10px;
+            font-size: 13px;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+        }
+
+        table tr:hover {
+            background: rgba(255,162,57,0.09);
+        }
+
+        /* Assignments */
+        ul {
+            list-style: none;
+            padding-left: 0;
+            margin-top: 12px;
+        }
+
+        li {
+            margin-bottom: 15px;
+            font-size: 14px;
+            padding: 12px;
+            background: rgba(255,255,255,0.6);
+            border-radius: 14px;
+            border: 1px solid rgba(0,0,0,0.06);
+        }
+
+        li strong {
+            color: #5A0A6A;
+        }
+
+    </style>
+</head>
+
+<body>
+<!-- PRELOADER -->
+<div id="preloader">
+    <img src="{{ url_for('static', filename='images/preloader.gif') }}" alt="Loading...">
+</div>
+<div class="bg-image"></div>
+<div class="bg-overlay"></div>
+
+<header class="topbar">
+    <h1>UAP — Student Dashboard</h1>
+    <div class="nav">
+        <span>Hi, {{ profile.name }}</span>
+        <a href="{{ url_for('student_bp.logout') }}">Logout</a>
+    </div>
+</header>
+
+<main class="container">
+
+    <!-- Profile -->
+    <section class="profile card">
+        <h2>Profile</h2>
+        <p><strong>Registration:</strong> {{ profile.registration_number }}</p>
+        <p><strong>Roll:</strong> {{ profile.roll_number }}</p>
+        <p><strong>Department:</strong> {{ profile.department }}</p>
+        <p><strong>Session:</strong> {{ profile.session_start }} - {{ profile.session_end }}</p>
+    </section>
+
+    <!-- Semester Registration -->
+    <section class="card">
+        <h2>Semester Registration</h2>
+        {% if registration_open %}
+            <form id="regForm" method="post" action="{{ url_for('student_bp.semester_register') }}">
+                <label>Semester</label>
+                <input name="semester" required>
+
+                <div id="subjects">
+                    <div class="subject-row">
+                        <input name="subject_name[]" placeholder="Subject name" required>
+                        <input name="subject_code[]" placeholder="Code (optional)">
+                        <input name="subject_dept[]" placeholder="Department (optional)">
+                        <button type="button" class="remove">-</button>
+                    </div>
+                </div>
+
+                <button type="button" id="addSubject">Add Subject</button>
+                <button type="submit">Submit Registration</button>
+            </form>
+        {% else %}
+            <p style="font-size:14px; color:#555;">Semester registration is currently closed.</p>
+        {% endif %}
+    </section>
+
+    <!-- Attendance -->
+    <section class="card">
+        <h2>Attendance</h2>
+        <table class="attendance-table">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Subject</th>
+                    <th>Faculty</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for a in attendance %}
+                <tr>
+                    <td>{{ a.date.strftime("%Y-%m-%d") if a.get('date') else (a.get('timestamp') and a.timestamp.strftime("%Y-%m-%d") ) }}</td>
+                    <td>{{ a.subject_name or a.get('subject') }}</td>
+                    <td>{{ a.faculty_name or a.get('faculty_reg_no') }}</td>
+                    <td>{{ a.status }}</td>
+                </tr>
+                {% else %}
+                <tr><td colspan="4">No attendance records found.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </section>
+
+    <!-- Assignments -->
+    <section class="card">
+        <h2>Assignments</h2>
+        <ul>
+            {% for asg in assignments %}
+            <li>
+                <strong>{{ asg.title }}</strong> — {{ asg.subject }} — due {{ asg.due_date or "N/A" }}
+                <div>{{ asg.description }}</div>
+                <div>Status: <em>{{ asg.status }}</em></div>
+            </li>
+            {% else %}
+            <li>No assignments.</li>
+            {% endfor %}
+        </ul>
+    </section>
+
+</main>
+
+<script>
+    // Add subject row
+    document.addEventListener("click", function(e) {
+        if(e.target.id === "addSubject") {
+            let row = document.createElement("div");
+            row.className = "subject-row";
+            row.innerHTML = `
+                <input name="subject_name[]" placeholder="Subject name" required>
+                <input name="subject_code[]" placeholder="Code (optional)">
+                <input name="subject_dept[]" placeholder="Department (optional)">
+                <button type="button" class="remove">-</button>
+            `;
+            document.getElementById("subjects").appendChild(row);
+        }
+
+        if(e.target.classList.contains("remove")) {
+            e.target.parentElement.remove();
+        }
+    });
+        // Preloader
+    window.addEventListener("load", () => {
+        setTimeout(() => {
+            document.getElementById("preloader").style.display = "none";
+        }, 3000);
+    });
+</script>
+
+</body>
+</html>

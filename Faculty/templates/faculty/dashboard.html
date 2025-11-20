@@ -1,0 +1,53 @@
+<!-- Faculty/templates/faculty/dashboard.html -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>Faculty Dashboard</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/faculty.css') }}"></head>
+<body>
+  <header class="topbar">
+    <h1>UAP — Faculty Dashboard</h1>
+    <div class="nav">
+      <span>Hi, {{ teacher.name }}</span>
+      <a href="{{ url_for('faculty_bp.logout') }}">Logout</a>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="card">
+      <h2>Profile</h2>
+      <p><strong>Registration:</strong> {{ teacher.registration_number }}</p>
+      <p><strong>Department:</strong> {{ teacher.department }}</p>
+      <p><strong>Designation:</strong> {{ teacher.designation or 'N/A' }}</p>
+    </section>
+
+    <section class="card">
+      <h2>Controls</h2>
+      <form method="post" action="{{ url_for('faculty_bp.toggle_registration') }}">
+        <button name="action" value="open" type="submit">Open Semester Registration</button>
+        <button name="action" value="close" type="submit">Close Semester Registration</button>
+      </form>
+      <p>Registrations: {{ total_regs }} &nbsp; Batches: {{ total_batches }}</p>
+    </section>
+
+    <section class="card">
+      <h2>Upcoming Assignments</h2>
+      <ul>
+        {% for a in upcoming_assignments %}
+          <li>{{ a.assignment_title }} — {{ a.subject_name }} — due {{ a.due_date or 'N/A' }}</li>
+        {% else %}
+          <li>No upcoming assignments.</li>
+        {% endfor %}
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>Quick Links</h2>
+      <a href="{{ url_for('faculty_bp.registrations') }}">View Registrations</a> |
+      <a href="{{ url_for('faculty_bp.batches') }}">Manage Batches</a> |
+      <a href="{{ url_for('faculty_bp.mark_attendance') }}">Mark Attendance</a> |
+      <a href="{{ url_for('faculty_bp.assignments') }}">Assignments</a>
+    </section>
+  </main>
+  <script src="{{ url_for('static', filename='js/faculty.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,286 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Assignments — Faculty</title>
+
+  <!-- FONT -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family:"Poppins",sans-serif;
+    }
+
+    body{
+      background:#F8F4EC;
+      overflow-x:hidden;
+    }
+
+    /* ================= BACKGROUND ================= */
+    .bg-image{
+      position: fixed;
+      inset: 0;
+      background-image:url("https://images.unsplash.com/photo-1730451306804-f7d3b0a3c4d5?q=80&w=880&auto=format&fit=crop");
+      background-size:100%;
+      background-position:center;
+      background-repeat:no-repeat;
+      filter:blur(2px);
+      opacity:0.85;
+      z-index:-2;
+    }
+
+    .bg-overlay{
+      position: fixed;
+      inset: 0;
+      background:linear-gradient(to bottom right, rgba(255,255,255,0.6), rgba(255,162,57,0.25));
+      z-index:-1;
+    }
+
+    /* ================= HEADER ================= */
+    header{
+      width:100%;
+      padding:18px 28px;
+      background:rgba(255,255,255,0.26);
+      backdrop-filter:blur(10px);
+      border-bottom:1px solid rgba(255,255,255,0.35);
+      box-shadow:0 6px 20px rgba(0,0,0,0.1);
+
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      position:sticky;
+      top:0;
+      z-index:10;
+    }
+
+    header h1{
+      font-size:22px;
+      color:#5A0A6A;
+      font-weight:700;
+    }
+
+    header a{
+      padding:8px 20px;
+      border-radius:999px;
+      background:#FFA239;
+      color:white;
+      text-decoration:none;
+      font-weight:600;
+      transition:0.2s;
+      box-shadow:0 6px 14px rgba(0,0,0,0.12);
+    }
+    header a:hover{
+      background:#ff9933;
+      transform:translateY(-2px);
+    }
+
+    /* ================= CONTAINER ================= */
+    .container{
+      width:100%;
+      max-width:1100px;
+      margin:40px auto;
+      padding:20px;
+      display:flex;
+      flex-direction:column;
+      gap:32px;
+    }
+
+    /* ================= CARD ================= */
+    .card{
+      background:rgba(255,255,255,0.32);
+      padding:28px;
+      border-radius:26px;
+      backdrop-filter:blur(12px);
+      border:1px solid rgba(255,255,255,0.45);
+      box-shadow:0 10px 26px rgba(0,0,0,0.12);
+      opacity:0;
+      transform:translateY(20px);
+      animation:fadeUp 0.7s ease-out forwards;
+    }
+
+    @keyframes fadeUp{
+      to{ opacity:1; transform:translateY(0); }
+    }
+
+    .card h3{
+      font-size:20px;
+      color:#5A0A6A;
+      font-weight:700;
+      margin-bottom:16px;
+    }
+
+    /* ================= FORM ================= */
+    form{
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+
+    label{
+      font-size:13px;
+      font-weight:600;
+      color:#444;
+    }
+
+    input, textarea{
+      padding:10px 12px;
+      border-radius:12px;
+      background:rgba(255,255,255,0.95);
+      border:1px solid rgba(0,0,0,0.15);
+      font-size:14px;
+      outline:none;
+    }
+
+    textarea{
+      resize:none;
+      border-radius:14px;
+      height:120px;
+    }
+
+    input:focus, textarea:focus{
+      border-color:#FFA239;
+      box-shadow:0 0 0 2px rgba(255,162,57,0.28);
+    }
+
+    button{
+      margin-top:8px;
+      padding:11px 22px;
+      border-radius:999px;
+      border:none;
+      background:#FFA239;
+      color:white;
+      font-size:15px;
+      font-weight:600;
+      cursor:pointer;
+      box-shadow:0 6px 14px rgba(0,0,0,0.12);
+      width:max-content;
+      transition:0.2s;
+    }
+    button:hover{
+      transform:scale(1.04);
+      background:#ff9933;
+    }
+
+    /* ================= TABLE ================= */
+    table{
+      width:100%;
+      border-collapse:collapse;
+      background:rgba(255,255,255,0.7);
+      border-radius:18px;
+      overflow:hidden;
+      backdrop-filter:blur(6px);
+    }
+
+    thead{
+      background:rgba(255,162,57,0.35);
+    }
+
+    th, td{
+      padding:14px;
+      font-size:14px;
+      text-align:left;
+    }
+
+    tbody tr:nth-child(even){
+      background:rgba(255,255,255,0.6);
+    }
+
+    a{
+      color:#5A0A6A;
+      font-weight:600;
+      text-decoration:none;
+    }
+    a:hover{ text-decoration:underline; }
+
+    @media(max-width:600px){
+      header h1{ font-size:18px; }
+      th, td{ font-size:12px; }
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="bg-image"></div>
+<div class="bg-overlay"></div>
+
+<header>
+  <h1>Assignments</h1>
+  <a href="{{ url_for('faculty_bp.dashboard') }}">Back</a>
+</header>
+
+<main class="container">
+
+  <!-- CREATE ASSIGNMENT -->
+  <section class="card">
+    <h3>Create Assignment</h3>
+
+    <form method="post" action="{{ url_for('faculty_bp.assignments') }}">
+      <label>Subject Name</label>
+      <input name="subject_name" required>
+
+      <label>Subject Code</label>
+      <input name="subject_code">
+
+      <label>Semester</label>
+      <input name="semester">
+
+      <label>Department</label>
+      <input name="department">
+
+      <label>Title</label>
+      <input name="assignment_title" required>
+
+      <label>Description</label>
+      <textarea name="description"></textarea>
+
+      <label>Due Date</label>
+      <input type="date" name="due_date">
+
+      <button type="submit">Create Assignment</button>
+    </form>
+  </section>
+
+  <!-- LIST OF ASSIGNMENTS -->
+  <section class="card">
+    <h3>Your Assignments</h3>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Subject</th>
+          <th>Due</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for a in assignments %}
+          <tr>
+            <td>{{ a.assignment_title }}</td>
+            <td>{{ a.subject_name or a.subject_code }}</td>
+            <td>{{ a.due_date or "N/A" }}</td>
+            <td>
+              <a href="{{ url_for('faculty_bp.review_assignment', assignment_id=a.assignment_id) }}">
+                Review / Update
+              </a>
+            </td>
+          </tr>
+        {% else %}
+          <tr>
+            <td colspan="4">No assignments yet.</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </section>
+
+</main>
+
+<script src="{{ url_for('static', filename='js/assignments.js') }}"></script>
+</body>
+</html>

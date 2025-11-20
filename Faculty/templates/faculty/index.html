@@ -1,0 +1,19 @@
+<!-- Faculty/templates/faculty/index.html -->
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>UAP Faculty Portal</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/faculty.css') }}">
+</head>
+<body>
+  <div class="container">
+    <header><h1>Unified Academics Platform — Faculty</h1></header>
+    <main>
+      <p>Faculty portal: manage registrations, batches, attendance, and assignments.</p>
+      <a class="btn" href="{{ url_for('faculty_bp.login') }}">Login</a>
+    </main>
+    <footer>&copy; UAP</footer>
+  </div>
+</body>
+</html>

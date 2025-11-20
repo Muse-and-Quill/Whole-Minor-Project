@@ -1,0 +1,288 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Mark Attendance</title>
+
+  <!-- FONT -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family:"Poppins",sans-serif;
+    }
+
+    body{
+      background:#F8F4EC;
+      overflow-x:hidden;
+      color:#333;
+    }
+
+    /* ================= BACKGROUND ================= */
+    .bg-image{
+      position: fixed;
+      inset: 0;
+
+      background-image: url("https://images.unsplash.com/photo-1730451306804-f7d3b0a3c4d5?q=80&w=880&auto=format&fit=crop");
+
+      background-size: 100%;       /* shrink to match other pages */
+      background-position: center;
+      background-repeat: no-repeat;
+      filter: blur(2px);
+      opacity: 0.85;
+      z-index: -2;
+    }
+
+    .bg-overlay{
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(to bottom right, rgba(255,255,255,0.6), rgba(255,162,57,0.25));
+      z-index: -1;
+    }
+
+    /* ================= HEADER ================= */
+    header{
+      width:100%;
+      padding:18px 28px;
+      background: rgba(255,255,255,0.26);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(255,255,255,0.35);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      position:sticky;
+      top:0;
+      z-index:10;
+    }
+
+    header h1{
+      font-size:22px;
+      color:#5A0A6A;
+      font-weight:700;
+    }
+
+    header a{
+      padding:8px 20px;
+      border-radius:999px;
+      background:#FFA239;
+      color:#fff;
+      text-decoration:none;
+      font-weight:600;
+      box-shadow:0 5px 12px rgba(0,0,0,0.15);
+      transition:0.2s;
+    }
+    header a:hover{ background:#ff9933; transform:translateY(-2px); }
+
+    /* ================= CONTAINER ================= */
+    .container{
+      width:100%;
+      max-width:1100px;
+      margin:40px auto;
+      padding:20px;
+    }
+
+    /* ================= CARD ================= */
+    .card{
+      background: rgba(255,255,255,0.32);
+      padding:26px 24px;
+      border-radius:24px;
+      backdrop-filter: blur(12px);
+      border:1px solid rgba(255,255,255,0.45);
+      box-shadow: 0px 10px 26px rgba(0,0,0,0.12);
+
+      opacity:0;
+      transform:translateY(20px);
+      animation: fadeUp 0.7s ease-out forwards;
+    }
+
+    @keyframes fadeUp { to { opacity:1; transform:translateY(0); } }
+
+    .card h3{
+      font-size:20px;
+      margin-bottom:14px;
+      color:#5A0A6A;
+      font-weight:700;
+    }
+
+    /* ================= FORM ================= */
+    form{
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+
+    label{
+      font-size:13px;
+      font-weight:600;
+      color:#333;
+    }
+
+    input, select, textarea{
+      padding:10px 12px;
+      border-radius:12px;
+      border:1px solid rgba(0,0,0,0.15);
+      background:rgba(255,255,255,0.95);
+      font-size:14px;
+      outline:none;
+    }
+
+    input:focus, select:focus{
+      border-color:#FFA239;
+      box-shadow:0 0 0 2px rgba(255,162,57,0.25);
+    }
+
+    textarea{
+      resize:none;
+      border-radius:14px;
+    }
+
+    button{
+      padding:11px 18px;
+      border-radius:999px;
+      border:none;
+      background:#FFA239;
+      color:white;
+      font-size:15px;
+      font-weight:600;
+      cursor:pointer;
+      box-shadow:0 6px 14px rgba(0,0,0,0.12);
+      transition:0.2s;
+      width:max-content;
+    }
+    button:hover{
+      transform:scale(1.04);
+      background:#ff9933;
+    }
+
+    /* ================= STUDENT ROWS ================= */
+    #studentsArea{
+      margin-top:10px;
+      background: rgba(255,255,255,0.35);
+      padding:14px;
+      border-radius:16px;
+      border:1px solid rgba(255,255,255,0.45);
+      backdrop-filter: blur(10px);
+    }
+
+    .student-row{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      margin-bottom:12px;
+      background:rgba(255,255,255,0.85);
+      border-radius:12px;
+      padding:10px;
+      border:1px solid rgba(0,0,0,0.06);
+    }
+
+    .student-row input{
+      flex:1;
+    }
+
+    .student-row select{
+      padding:10px;
+      border-radius:10px;
+    }
+
+    .student-row button{
+      background:#e74c3c;
+      padding:8px 12px;
+      border-radius:12px;
+      box-shadow:none;
+    }
+
+    .student-row button:hover{
+      background:#c0392b;
+      transform:scale(1.05);
+    }
+
+    #addStudent{
+      margin-top:8px;
+      background:#63A361;
+    }
+    #addStudent:hover{ background:#4e8b51; }
+
+    #fetchEnrolled{
+      background:#6A5ACD;
+    }
+    #fetchEnrolled:hover{ background:#5947c2; }
+
+    /* RESPONSIVE */
+    @media(max-width:600px){
+      .student-row{ flex-wrap:wrap; }
+      header h1{ font-size:18px; }
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="bg-image"></div>
+<div class="bg-overlay"></div>
+
+<header>
+  <h1>Mark Attendance</h1>
+  <a href="{{ url_for('faculty_bp.dashboard') }}">Back</a>
+</header>
+
+<main class="container">
+
+  <section class="card">
+    <form id="attendanceForm" method="post" action="{{ url_for('faculty_bp.mark_attendance') }}">
+
+      <label>Subject Name</label>
+      <input name="subject_name" required>
+
+      <label>Subject Code</label>
+      <input name="subject_code">
+
+      <label>Semester</label>
+      <input name="semester" placeholder="e.g. 1">
+
+      <label>Department</label>
+      <input name="department" placeholder="e.g. CSE (optional)">
+
+      <label>Batch</label>
+      <input name="batch" placeholder="Batch A (optional)">
+
+      <label>Date</label>
+      <input type="date" name="date" required>
+
+      <label>Time/Period</label>
+      <input name="time_period">
+
+      <p>
+        Use <strong>Fetch enrolled students</strong> to auto-populate students for the selected subject/semester/batch.
+      </p>
+
+      <button type="button" id="fetchEnrolled">Fetch enrolled students</button>
+
+      <div id="studentsArea">
+        <div class="student-row">
+          <input name="student_reg_no[]" placeholder="Registration number" required>
+          <input name="student_name[]" placeholder="Student name" readonly>
+          <select name="status[]">
+            <option>Present</option>
+            <option>Absent</option>
+            <option>Late</option>
+          </select>
+          <button type="button" class="remove">-</button>
+        </div>
+      </div>
+
+      <button type="button" id="addStudent">Add Student</button>
+      <button type="submit">Submit Attendance</button>
+
+    </form>
+  </section>
+
+</main>
+
+<script src="{{ url_for('static', filename='js/attendance.js') }}"></script>
+</body>
+</html>

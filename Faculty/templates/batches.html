@@ -1,0 +1,289 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Manage Batches</title>
+
+  <!-- GOOGLE FONT -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family:"Poppins",sans-serif;
+    }
+
+    body{
+      background:#F8F4EC;
+      overflow-x:hidden;
+      color:#333;
+    }
+
+    /* ================= FULL BACKGROUND ================= */
+    .bg-image{
+      position: fixed;
+      inset: 0;
+
+      background-image: url("https://images.unsplash.com/photo-1730451306804-f7d3b0a3c4d5?q=80&w=880&auto=format&fit=crop");
+
+      background-size: 100%;       /* shrink to match your design */
+      background-position: center;
+      background-repeat: no-repeat;
+
+      filter: blur(2px);
+      opacity: 0.85;
+      z-index: -2;
+    }
+
+    .bg-overlay{
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(to bottom right, rgba(255,255,255,0.6), rgba(255,162,57,0.25));
+      z-index: -1;
+    }
+
+    /* ================= HEADER ================= */
+    header{
+      width:100%;
+      padding:18px 28px;
+      background: rgba(255,255,255,0.26);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(255,255,255,0.35);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      position:sticky;
+      top:0;
+      z-index:10;
+    }
+
+    header h1{
+      font-size:22px;
+      color:#5A0A6A;
+      font-weight:700;
+    }
+
+    header a{
+      padding:8px 20px;
+      border-radius:999px;
+      background:#FFA239;
+      color:#fff;
+      text-decoration:none;
+      font-weight:600;
+      box-shadow:0 5px 12px rgba(0,0,0,0.15);
+      transition:0.2s;
+    }
+    header a:hover{
+      background:#ff9933;
+      transform:translateY(-2px);
+    }
+
+    /* ================= LAYOUT ================= */
+    .container{
+      width:100%;
+      max-width:1250px;
+      margin:40px auto;
+      padding:20px;
+
+      display:grid;
+      grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+      gap:28px;
+    }
+
+    /* ================= CARD ================= */
+    .card{
+      background: rgba(255,255,255,0.32);
+      padding:26px 24px;
+      border-radius:24px;
+      backdrop-filter: blur(12px);
+      border:1px solid rgba(255,255,255,0.45);
+      box-shadow: 0px 10px 26px rgba(0,0,0,0.12);
+
+      opacity:0;
+      transform:translateY(20px);
+      animation: fadeUp 0.7s ease-out forwards;
+    }
+
+    @keyframes fadeUp {
+      to { opacity:1; transform:translateY(0); }
+    }
+
+    .card h3{
+      font-size:20px;
+      margin-bottom:14px;
+      color:#5A0A6A;
+      font-weight:700;
+    }
+
+    /* ================= FORM ================= */
+    form{
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+
+    label{
+      font-size:13px;
+      font-weight:600;
+      color:#333;
+    }
+
+    input, textarea{
+      padding:10px 12px;
+      border-radius:12px;
+      border:1px solid rgba(0,0,0,0.15);
+      background:rgba(255,255,255,0.95);
+      font-size:14px;
+      outline:none;
+    }
+
+    input:focus, textarea:focus{
+      border-color:#FFA239;
+      box-shadow:0 0 0 2px rgba(255,162,57,0.25);
+    }
+
+    textarea{
+      resize:none;
+      border-radius:14px;
+    }
+
+    button{
+      margin-top:4px;
+      padding:11px 18px;
+      border-radius:999px;
+      border:none;
+      background:#FFA239;
+      color:white;
+      font-size:16px;
+      font-weight:600;
+      cursor:pointer;
+      box-shadow:0 6px 14px rgba(0,0,0,0.12);
+      transition:0.2s;
+    }
+    button:hover{
+      transform:scale(1.04);
+      background:#ff9933;
+    }
+
+    /* ================= TABLE ================= */
+    table{
+      width:100%;
+      border-collapse:collapse;
+      margin-top:12px;
+
+      background:rgba(255,255,255,0.32);
+      backdrop-filter:blur(12px);
+      border-radius:18px;
+      overflow:hidden;
+
+      box-shadow:0px 10px 28px rgba(0,0,0,0.12);
+      border:1px solid rgba(255,255,255,0.45);
+    }
+
+    thead{
+      background:rgba(255,255,255,0.65);
+    }
+
+    th, td{
+      padding:14px 16px;
+      text-align:left;
+      font-size:14px;
+      border-bottom:1px solid rgba(0,0,0,0.08);
+    }
+
+    th{
+      font-weight:700;
+      color:#5A0A6A;
+    }
+
+    tr:hover{
+      background:rgba(255,255,255,0.55);
+    }
+
+    @media(max-width:600px){
+      th, td{ padding:10px; font-size:12px; }
+      .card{ padding:18px; }
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="bg-image"></div>
+<div class="bg-overlay"></div>
+
+<header>
+  <h1>Manage Batches</h1>
+  <a href="{{ url_for('faculty_bp.dashboard') }}">Back</a>
+</header>
+
+<main class="container">
+
+  <!-- Create Batch / Enroll Students -->
+  <section class="card">
+    <h3>Create Batch / Enroll Students</h3>
+
+    <form method="post" action="{{ url_for('faculty_bp.batches') }}">
+      <label>Subject Name</label>
+      <input name="subject_name" required>
+
+      <label>Subject Code</label>
+      <input name="subject_code">
+
+      <label>Semester</label>
+      <input name="semester">
+
+      <label>Department</label>
+      <input name="department">
+
+      <label>Batch</label>
+      <input name="batch" required>
+
+      <label>Student Registration Numbers (one per line)</label>
+      <textarea name="student_reg_no[]" rows="6" placeholder="UAP25001&#10;UAP25002"></textarea>
+
+      <button type="submit">Create Enrollments</button>
+    </form>
+  </section>
+
+  <!-- Existing Batches -->
+  <section class="card">
+    <h3>Existing Batches</h3>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Subject</th>
+          <th>Batch</th>
+          <th>Student</th>
+          <th>Faculty</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {% for b in batches %}
+          <tr>
+            <td>{{ b.subject_name }} ({{ b.subject_code }})</td>
+            <td>{{ b.batch }}</td>
+            <td>{{ b.student_reg_no }}</td>
+            <td>{{ b.faculty_reg_no }}</td>
+          </tr>
+        {% else %}
+          <tr>
+            <td colspan="4" style="text-align:center; padding:16px;">
+              No batches yet.
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </section>
+
+</main>
+
+</body>
+</html>

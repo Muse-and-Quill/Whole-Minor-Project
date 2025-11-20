@@ -1,0 +1,43 @@
+<!-- Faculty/templates/faculty/batches.html -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>Batches</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/faculty.css') }}"></head>
+<body>
+  <header><h1>Manage Batches</h1><a href="{{ url_for('faculty_bp.dashboard') }}">Back</a></header>
+  <main class="container">
+    <section class="card">
+      <h3>Create Batch / Enroll Students</h3>
+      <form method="post" action="{{ url_for('faculty_bp.batches') }}">
+        <label>Subject Name</label><input name="subject_name" required>
+        <label>Subject Code</label><input name="subject_code">
+        <label>Semester</label><input name="semester">
+        <label>Department</label><input name="department">
+        <label>Batch</label><input name="batch" required>
+        <label>Student Registration Numbers (one per line)</label>
+        <textarea name="student_reg_no[]" placeholder="UAP25001\nUAP25002" rows="6"></textarea>
+        <button type="submit">Create Enrollments</button>
+      </form>
+    </section>
+
+    <section class="card">
+      <h3>Existing Batches</h3>
+      <table>
+        <thead><tr><th>Subject</th><th>Batch</th><th>Student</th><th>Faculty</th></tr></thead>
+        <tbody>
+          {% for b in batches %}
+            <tr>
+              <td>{{ b.subject_name }} ({{ b.subject_code }})</td>
+              <td>{{ b.batch }}</td>
+              <td>{{ b.student_reg_no }}</td>
+              <td>{{ b.faculty_reg_no }}</td>
+            </tr>
+          {% else %}
+            <tr><td colspan="4">No batches yet.</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </section>
+  </main>
+</body>
+</html>

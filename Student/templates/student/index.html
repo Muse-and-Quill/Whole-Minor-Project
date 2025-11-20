@@ -1,0 +1,19 @@
+<!-- student/templates/student/index.html -->
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>UAP Student Portal</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/student.css') }}">
+</head>
+<body>
+  <div class="container">
+    <header><h1>Unified Academics Platform — Student</h1></header>
+    <main>
+      <p>Welcome to the Student Portal. Use your registration number and password, or login via OTP sent to your college email.</p>
+      <a class="btn" href="{{ url_for('student_bp.login') }}">Login</a>
+    </main>
+    <footer>&copy; UAP</footer>
+  </div>
+</body>
+</html>

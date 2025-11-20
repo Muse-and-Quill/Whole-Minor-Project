@@ -1,0 +1,314 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>UAP – Student Login</title>
+
+    <!-- GOOGLE FONTS -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Poppins", sans-serif;
+        }
+
+        body{
+            overflow-x: hidden;
+            overflow-y: auto;
+            background: #F8F4EC;
+        }
+
+        /* ================= PRELOADER ================= */
+        #preloader {
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(to bottom right, #FCF5EE, #EBD5AB);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+        #preloader img {
+            width: 120px;
+            height: 120px;
+            animation: pulse 1.5s infinite ease-in-out;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.1); opacity: 0.7; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        /* ================= BACKGROUND ================= */
+        .bg-image{
+            position: absolute;
+            inset: 0;
+            background-image: url("https://plus.unsplash.com/premium_photo-1676068243733-df1880c2aef8?auto=format&fit=crop");
+            background-size: cover;
+            background-position: center;
+            filter: blur(3px);
+            opacity: 0.75;
+            z-index: -2;
+        }
+        .bg-overlay{
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to bottom right, rgba(248,244,236,0.7), rgba(255,162,57,0.25));
+            z-index: -1;
+        }
+
+        /* ================= LOGIN CARD ================= */
+        .wrapper {
+            width: 100%;
+            min-height: 100vh;
+            padding: 40px 20px;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .card {
+            width: 100%;
+            max-width: 480px;
+            padding: 38px 34px;
+            border-radius: 28px;
+
+            background: rgba(255,255,255,0.32);
+            backdrop-filter: blur(14px);
+            border: 1px solid rgba(255,255,255,0.4);
+            box-shadow: 0px 8px 24px rgba(0,0,0,0.15);
+
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeUp 1s forwards ease-out;
+        }
+
+        @keyframes fadeUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h2 {
+            font-size: 26px;
+            color: #5A0A6A;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 12px;
+        }
+
+        .messages {
+            margin-bottom: 14px;
+        }
+
+        .alert {
+            padding: 10px 12px;
+            border-radius: 12px;
+            font-size: 13px;
+            margin-bottom: 8px;
+            text-align: left;
+        }
+        .success { background: rgba(99,163,97,0.12); color:#2d6a2d; border:1px solid rgba(99,163,97,0.4); }
+        .error { background: rgba(192,57,43,0.08); color:#c0392b; border:1px solid rgba(192,57,43,0.35); }
+
+        .tabs {
+            margin-top: 6px;
+            display: flex;
+            background: rgba(255,255,255,0.3);
+            padding: 6px;
+            border-radius: 20px;
+            justify-content: space-between;
+            backdrop-filter: blur(10px);
+        }
+
+        .tabs button {
+            flex: 1;
+            padding: 10px 0;
+            border: none;
+            border-radius: 18px;
+            background: transparent;
+            color: #444;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .tabs .active {
+            background: #FFA239;
+            color: white;
+            box-shadow: 0px 4px 12px rgba(0,0,0,0.15);
+        }
+
+        form {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        label {
+            font-size: 13px;
+            color: #333;
+            font-weight: 600;
+        }
+
+        input {
+            padding: 10px 12px;
+            border-radius: 12px;
+            border: 1px solid rgba(0,0,0,0.1);
+            font-size: 14px;
+            outline: none;
+            background: rgba(255,255,255,0.95);
+            transition: 0.2s;
+        }
+
+        input:focus {
+            border-color: #FFA239;
+            box-shadow: 0 0 0 2px rgba(255,162,57,0.25);
+        }
+
+        button[type="submit"] {
+            padding: 10px 20px;
+            background: #FFA239;
+            border: none;
+            border-radius: 999px;
+            font-size: 16px;
+            font-weight: 600;
+            color: white;
+            cursor: pointer;
+            box-shadow: 0px 6px 14px rgba(0,0,0,0.15);
+            transition: 0.25s;
+        }
+
+        button[type="submit"]:hover {
+            background: #ff9933;
+            transform: scale(1.04);
+        }
+
+        a {
+            color: #5A0A6A;
+            font-size: 13px;
+            text-decoration: none;
+            transition: 0.2s;
+        }
+
+        a:hover {
+            color: #3b0651;
+        }
+
+        .info {
+            margin-top: 12px;
+            padding: 10px 12px;
+            font-size: 13px;
+            border-radius: 12px;
+            background: rgba(255,162,57,0.15);
+            border: 1px solid rgba(255,162,57,0.35);
+            color: #8a4c15;
+            text-align: left;
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- PRELOADER -->
+<div id="preloader">
+    <img src="{{ url_for('static', filename='images/preloader.gif') }}" alt="Loading...">
+</div>
+
+<div class="bg-image"></div>
+<div class="bg-overlay"></div>
+
+<div class="wrapper">
+    <div class="card">
+
+        <h2>Student Login</h2>
+
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            <div class="messages">
+              {% for cat, msg in messages %}
+                <div class="alert {{cat}}">{{ msg }}</div>
+              {% endfor %}
+            </div>
+          {% endif %}
+        {% endwith %}
+
+        <!-- Tabs -->
+        <div class="tabs">
+            <button id="pwTab" class="active">Password</button>
+            <button id="otpTab">OTP</button>
+        </div>
+
+        <!-- Password Login -->
+        <form id="passwordForm" method="post" action="{{ url_for('student_bp.login') }}">
+            <input type="hidden" name="mode" value="password">
+            <label>Registration Number</label>
+            <input name="registration_number" required>
+            <label>Password</label>
+            <input name="password" type="password" required>
+            <button type="submit">Login with Password</button>
+            <p style="text-align:center; margin-top:8px;">
+                <a href="{{ url_for('student_bp.forgot_password') }}">Forgot password?</a>
+            </p>
+        </form>
+
+        <!-- OTP Login -->
+        <form id="otpForm" method="post" action="{{ url_for('student_bp.login') }}" style="display:none;">
+            <input type="hidden" name="mode" value="otp">
+            <label>Registration Number</label>
+            <input name="registration_number" required>
+            <button type="submit">Send OTP</button>
+        </form>
+
+        <!-- OTP Verification -->
+        {% if otp_sent %}
+            <div class="info">
+                OTP sent to the email of <strong>{{ reg_no }}</strong> — please check and verify below.
+            </div>
+
+            <form method="post" action="{{ url_for('student_bp.verify_otp') }}">
+                <input type="hidden" name="registration_number" value="{{ reg_no }}">
+                <label>Enter OTP</label>
+                <input name="otp" required>
+                <button type="submit">Verify OTP</button>
+            </form>
+        {% endif %}
+
+    </div>
+</div>
+
+<script>
+    // Preloader
+    window.addEventListener("load", () => {
+        setTimeout(() => {
+            document.getElementById("preloader").style.display = "none";
+        }, 3000);
+    });
+
+    // Login Tabs
+    const pwTab = document.getElementById("pwTab");
+    const otpTab = document.getElementById("otpTab");
+    const pwForm = document.getElementById("passwordForm");
+    const otpForm = document.getElementById("otpForm");
+
+    pwTab.onclick = () => {
+        pwTab.classList.add("active");
+        otpTab.classList.remove("active");
+        pwForm.style.display = "flex";
+        otpForm.style.display = "none";
+    };
+
+    otpTab.onclick = () => {
+        otpTab.classList.add("active");
+        pwTab.classList.remove("active");
+        pwForm.style.display = "none";
+        otpForm.style.display = "flex";
+    };
+</script>
+
+</body>
+</html>

@@ -1,0 +1,33 @@
+<!-- Faculty/templates/faculty/registrations.html -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>Registrations</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/faculty.css') }}"></head>
+<body>
+  <header><h1>Student Registrations</h1><a href="{{ url_for('faculty_bp.dashboard') }}">Back</a></header>
+  <main class="container">
+    <table>
+      <thead><tr><th>Student</th><th>Roll</th><th>Dept</th><th>Semester</th><th>Subjects</th></tr></thead>
+      <tbody>
+        {% for r in regs %}
+          <tr>
+            <td>{{ r.student_reg_no }}</td>
+            <td>{{ r.student_roll_no }}</td>
+            <td>{{ r.department }}</td>
+            <td>{{ r.semester }}</td>
+            <td>
+              <ul>
+                {% for s in r.subjects %}
+                  <li>{{ s.subject_name }} ({{ s.subject_code or '-' }})</li>
+                {% endfor %}
+              </ul>
+            </td>
+          </tr>
+        {% else %}
+          <tr><td colspan="5">No registrations found.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </main>
+</body>
+</html>

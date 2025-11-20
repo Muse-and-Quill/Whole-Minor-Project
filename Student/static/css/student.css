@@ -1,0 +1,47 @@
+/* student/static/css/student.css - minimal, clean styling */
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background: #f7f8fb;
+  color: #222;
+  margin: 0;
+  padding: 0;
+}
+.container, .login-container {
+  max-width: 900px;
+  margin: 24px auto;
+  padding: 16px;
+}
+.topbar {
+  background: #1b5e8a;
+  color: white;
+  padding: 12px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.card {
+  background: white;
+  padding: 12px;
+  margin: 12px 0;
+  border-radius: 6px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+}
+input, button {
+  padding: 8px;
+  margin: 6px 0;
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+}
+button { cursor: pointer; }
+.alert { padding: 8px; margin: 8px 0; border-radius: 4px; }
+.alert.danger { background: #fdecea; color: #9a1a1a; }
+.alert.success { background: #e6f8ef; color: #0a6a3a; }
+.alert.info { background: #eef6ff; color: #084b8a; }
+.tabs button { padding: 8px 12px; margin-right: 6px; }
+.tabs button.active { background: #1b5e8a; color: white; }
+.subject-row { display:flex; gap:8px; align-items:center; }
+.subject-row input { width: auto; flex:1; }
+.subject-row .remove { width:40px; }
+.attendance-table { width:100%; border-collapse: collapse; }
+.attendance-table th, .attendance-table td { padding:8px; border-bottom:1px solid #eee; text-align:left; }
