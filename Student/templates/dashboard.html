@@ -254,20 +254,59 @@
             color: #5A0A6A;
         }
 
+        /* ===== FLASH MESSAGES ===== */
+.messages {
+    margin-top: 12px;
+}
+
+.alert {
+    padding: 10px 14px;
+    margin-bottom: 10px;
+    border-radius: 12px;
+    font-size: 14px;
+    animation: slideFlash 0.4s ease;
+}
+
+.alert.success {
+    background: rgba(76, 175, 80, 0.15);
+    border-left: 4px solid #4CAF50;
+    color: #2e7d32;
+}
+
+.alert.error {
+    background: rgba(244, 67, 54, 0.15);
+    border-left: 4px solid #F44336;
+    color: #b71c1c;
+}
+
+@keyframes slideFlash {
+    from { opacity: 0; transform: translateY(-6px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
     </style>
 </head>
 
 <body>
-<!-- PRELOADER -->
-<div id="preloader">
-    <img src="{{ url_for('static', filename='images/preloader.gif') }}" alt="Loading...">
-</div>
+
+
 <div class="bg-image"></div>
 <div class="bg-overlay"></div>
 
 <header class="topbar">
+
     <h1>UAP — Student Dashboard</h1>
     <div class="nav">
+                    <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            <div class="messages">
+              {% for cat, msg in messages %}
+                <div class="alert {{cat}}">{{ msg }}</div>
+              {% endfor %}
+            </div>
+          {% endif %}
+        {% endwith %}
         <span>Hi, {{ profile.name }}</span>
         <a href="{{ url_for('student_bp.logout') }}">Logout</a>
     </div>
@@ -355,6 +394,14 @@
 </main>
 
 <script>
+    setTimeout(() => {
+    document.querySelectorAll(".alert").forEach(alert => {
+        alert.style.transition = "0.4s";
+        alert.style.opacity = "0";
+        alert.style.transform = "translateY(-6px)";
+        setTimeout(() => alert.remove(), 400);
+    });
+}, 3000);
     // Add subject row
     document.addEventListener("click", function(e) {
         if(e.target.id === "addSubject") {
@@ -373,12 +420,7 @@
             e.target.parentElement.remove();
         }
     });
-        // Preloader
-    window.addEventListener("load", () => {
-        setTimeout(() => {
-            document.getElementById("preloader").style.display = "none";
-        }, 3000);
-    });
+
 </script>
 
 </body>
